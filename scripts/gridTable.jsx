@@ -229,7 +229,7 @@ var GridTable = React.createClass({
           paddingBottom: "40px"
         };
       }
-	  
+
 	  defaultColSpan = this.props.columnSettings.getVisibleColumnCount();
 
       var loadingComponent = this.props.externalLoadingComponent ?
@@ -293,6 +293,9 @@ var GridTable = React.createClass({
     }
 
     return  <div ref="scrollable" onScroll={this.gridScroll} style={gridStyle}>
+              <table className={this.props.className} style={(this.props.useGriddleStyles&&tableStyle)||null}>
+                  {pagingContent}
+              </table>
               <table className={this.props.className} style={(this.props.useGriddleStyles&&tableStyle)||null}>
                   {tableHeading}
                   {nodes}
