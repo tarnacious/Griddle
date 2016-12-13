@@ -44,15 +44,15 @@ var GridRow = React.createClass({
       //hack to get around warning that's not super useful in this case
       return;
     },
-	handleSelectClick: function(e) {
-		if(this.props.multipleSelectionSettings.isMultipleSelection) {
-			if(e.target.type === "checkbox") {
-				this.props.multipleSelectionSettings.toggleSelectRow(this.props.data, this.refs.selected.checked);
-			} else {
-				this.props.multipleSelectionSettings.toggleSelectRow(this.props.data, !this.refs.selected.checked)
-			}
-		}
-	},
+    handleSelectClick: function(e) {
+      if(this.props.multipleSelectionSettings.isMultipleSelection) {
+        if(e.target.type === "checkbox") {
+          this.props.multipleSelectionSettings.toggleSelectRow(this.props.data, this.refs.selected.checked);
+        } else {
+          this.props.multipleSelectionSettings.toggleSelectRow(this.props.data, !this.refs.selected.checked)
+        }
+      }
+    },
     verifyProps: function(){
         if(this.props.columnSettings === null){
            console.error("gridRow: The columnSettings prop is null and it shouldn't be");
@@ -125,8 +125,8 @@ var GridRow = React.createClass({
             tdOnClick = this.handleSelectClick;
         } else {
             if (this.props.multipleSelectionSettings && this.props.multipleSelectionSettings.isMultipleSelection) {
-                trOnClick = this.handleSelectClick;
-                tdOnClick = null;
+                trOnClick = null;
+                tdOnClick = this.handleSelectClick;
             } else {
                 trOnClick = null;
                 tdOnClick = null;
