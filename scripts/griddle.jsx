@@ -381,11 +381,10 @@ var Griddle = React.createClass({
         this.setState(state);
     },
     componentWillReceiveProps: function(nextProps) {
-        // This probably should be updated, but first filters applied
-        if(nextProps.selectedRowIds == this.state.selectedRowIds) {
-          // Now we only do it if we're not updating selectedRowIds
+        if(nextProps.results.length !== nextProps.results.length) {
           this.setMaxPage(nextProps.results);
         }
+
         if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
             this.setPageSize(nextProps.resultsPerPage);
         }
