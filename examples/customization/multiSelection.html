@@ -1,0 +1,91 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/react/15.4.1/react-dom.js"></script>
+<script src="//fb.me/JSXTransformer-0.13.2.js"></script>
+<script type="text/javascript" src="../../build/Griddle.js"></script>
+
+<div id="customLink"></div>
+
+<script type="text/jsx">
+/** @jsx React.DOM */
+
+var HeaderComponent = React.createClass({
+  textOnClick: function(e) {
+    e.stopPropagation();
+  },
+
+  filterText: function(e) {
+    this.props.filterByColumn(e.target.value, this.props.columnName)
+  },
+
+  render: function(){
+    return (
+      <span>
+        <div><strong style={{color: this.props.color}}>{this.props.displayName}</strong></div>
+        <input type='text' onChange={this.filterText} onClick={this.textOnClick} />
+      </span>
+    );
+  }
+});
+
+var customColumnMetadata = [
+  {
+    "columnName": "id",
+    "order": 1,
+    "locked": false,
+    "visible": true
+  },
+  {
+    "columnName": "name",
+    "order": 2,
+    "locked": false,
+    "visible": true,
+    "customHeaderComponent": HeaderComponent
+  }
+];
+
+fakeData = [
+  {
+    "id": 1,
+    "name": "test name 1",
+  },
+  {
+    "id": 2,
+    "name": "test name 2",
+  },
+  {
+    "id": 3,
+    "name": "test name 3",
+  }
+]
+
+var GridContainerComponent = React.createClass({
+
+  getInitialState: function() {
+    return {
+      selected_ids: []
+    };
+  },
+
+  selectionChanged: function(selected_ids) {
+    this.setState({selected_ids: selected_ids});
+  },
+
+  render: function(){
+    return (
+      <Griddle
+        isMultipleSelection={ true }
+        onSelectionChange={ this.selectionChanged  }
+        resultsPerPage={ 2 }
+        selectedRowIds={ this.state.selected_ids }
+        results={ fakeData }
+        columnMetadata={ customColumnMetadata }
+        columns={ ["id", "name"] }
+      />
+    )
+  }
+});
+
+
+ReactDOM.render(<GridContainerComponent />, document.getElementById('customLink'));
+
+</script>
