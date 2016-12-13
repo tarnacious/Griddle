@@ -307,6 +307,7 @@ var Griddle = React.createClass({
           this.setState({page: 0, maxPage: maxPage, filteredColumns: this.columnSettings.filteredColumns });
         }
     },
+
     setPage: function(number) {
         if(this.props.useExternal) {
             this.props.externalSetPage(number);
@@ -320,15 +321,25 @@ var Griddle = React.createClass({
                     page: number
                 };
 
-                that.setState(state);
+                that.setState(state, function() {
+                    var visibleRows = this.getDataForRender(this.getCurrentResults(this.props.results), this.columnSettings.getColumns(), true);
+
+                    this.setState({
+                        isSelectAllChecked: this._getAreAllRowsChecked(this.props.selectedRowIds, map(visibleRows, this.props.uniqueIdentifier))
+                    });
+
+                }.bind(this));
         }
 
-		//When infinite scrolling is enabled, uncheck the "select all" checkbox, since more unchecked rows will be appended at the end
-		if(this.props.enableInfiniteScroll) {
-			this.setState({
-				isSelectAllChecked: false
-			})
-		}
+
+
+        //When infinite scrolling is enabled, uncheck the "select all"
+        //checkbox, since more unchecked rows will be appended at the end
+        if(this.props.enableInfiniteScroll) {
+          this.setState({
+            isSelectAllChecked: false
+          })
+        }
     },
     setColumns: function(columns){
         this.columnSettings.filteredColumns = isArray(columns) ? columns : [columns];
@@ -388,8 +399,10 @@ var Griddle = React.createClass({
         if (nextProps.resultsPerPage !== this.props.resultsPerPage) {
             this.setPageSize(nextProps.resultsPerPage);
         }
-	    //This will updaet the column Metadata
-	    this.columnSettings.columnMetadata = nextProps.columnMetadata;
+
+        //This will updaet the column Metadata
+        this.columnSettings.columnMetadata = nextProps.columnMetadata;
+
         if(nextProps.results.length > 0)
         {
             var deepKeys = deep.keys(nextProps.results[0]);
