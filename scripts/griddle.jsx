@@ -407,7 +407,7 @@ var Griddle = React.createClass({
             this.columnSettings.allColumns = [];
         }
 
-        if(nextProps.selectedRowIds != this.state.selectedRowIds) {
+        if(nextProps.selectedRowIds) {
             var visibleRows = this.getDataForRender(this.getCurrentResults(nextProps.results), this.columnSettings.getColumns(), true);
 
             this.setState({
